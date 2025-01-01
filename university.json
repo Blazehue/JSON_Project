@@ -1,0 +1,26 @@
+{
+  "university": {
+    "departments": [
+      {
+        "id": 1,
+        "name": "Computer Science",
+        "professors": []
+      },
+      {
+        "id": 2,
+        "name": "Electrical Engineering",
+        "professors": []
+      },
+      {
+        "id": 3,
+        "name": "Electrical Engineering",
+        "professors": []
+      },
+      {
+        "id": 4,
+        "name": "Civil Engineering",
+        "professors": []
+      }
+    ]
+  }
+}
