@@ -16,7 +16,7 @@ function readData() {
   }
 }
 
-
+//writes the data to the file path
 function writeData(data) {
   try {
     fs.writeFileSync(path, JSON.stringify(data, null, 2));
@@ -25,7 +25,7 @@ function writeData(data) {
   }
 }
 
-
+//backup data function before modification
 function backupData() {
   try {
     const rawData = fs.readFileSync(path);
@@ -37,7 +37,7 @@ function backupData() {
     console.error('Error creating backup:', err);
   }
 }
-
+//function for validating a department using its name attribute or string attribute
 function validateDepartment(department) {
   if (typeof department.name !== 'string' || department.name.trim() === '') {
     throw new Error('Department name must be a non-empty string.');
@@ -73,7 +73,7 @@ function validateStudent(student) {
   }
 }
 
-
+//primary function for adding a new department
 function addDepartment(newDept) {
   const data = readData();
   if (!data) return;
@@ -91,12 +91,12 @@ function addDepartment(newDept) {
   console.log('Department added successfully!');
 }
 
-
+//function for adding a professor using its department id with its name attribute for the json file also includes validation of data added and modification of the data
 function addProf(departmentId, newProfessor) {
   const data = readData();
   if (!data) return;
 
-  // Validate professor data
+  // validate professor data
   validateProfessor(newProfessor);
 
   const department = data.university.departments.find(dept => dept.id === departmentId);
@@ -109,14 +109,14 @@ function addProf(departmentId, newProfessor) {
     console.log('Professor ID already exists.');
     return;
   }
-
+//pushes the new professor's data and backup is done for the same and writing it
   department.professors.push(newProfessor);
   backupData();
   writeData(data);
   console.log('Professor added successfully!');
 }
 
-
+//defines addition of a student using department Id, professor Id and the name of the student using newStudent
 function addStudent(departmentId, professorId, newStudent) {
   const data = readData();
   if (!data) return;
@@ -145,7 +145,7 @@ function addStudent(departmentId, professorId, newStudent) {
   writeData(data);
   console.log('Student added successfully!');
 }
-
+//updates professor for the student data provided
 function updateProfessor(departmentId, professorId, updatedData) {
   const data = readData();
   if (!data) return;
@@ -162,14 +162,14 @@ function updateProfessor(departmentId, professorId, updatedData) {
     return;
   }
 
- 
+ //assigns the updated data and logs the message of updation
   Object.assign(professor, updatedData);
   backupData();
   writeData(data);
   console.log('Professor updated successfully!');
 }
 
-
+//deletion of professors using their departmentId and professorId
 function deleteProfessors(departmentId, professorId) {
   const data = readData();
   if (!data) return;
@@ -185,14 +185,14 @@ function deleteProfessors(departmentId, professorId) {
     console.log('Professor not found.');
     return;
   }
-
+//using splice removing array elements allows to remove the professor data using the id attribute for the particular professor
   department.professors.splice(professorIndex, 1);
   backupData();
   writeData(data);
   console.log('Professor deleted successfully!');
 }
 
-
+//function searchProfByName(name) searches names of the professor in a nested way and flatmap used to flatlist each and every professor which maps particular department attribute to the professor's id, and filter converts it to the lowercase name structure
 function searchProfByName(name) {
   const data = readData();
   if (!data) return [];
@@ -208,5 +208,5 @@ const newDepartment = {
   name: 'Mechanical Engineering',
   professors: []
 };
-
+//function call
 addDepartment(newDepartment);
